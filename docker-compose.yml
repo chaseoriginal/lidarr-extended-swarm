@@ -12,11 +12,21 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - lidarr.config:/config
-      - lidarr.custom-services:/custom-services.d
-      - lidarr.custom-cont-init.d:/custom-cont-init.d
-      - /media/Multimedia/Music:/music
-      - /media/Multimedia/Incoming:/downloads
+      - type: bind
+        source: /var/lib/docker/volumes/lidarr-extended-swarm_lidarr.config
+        target: /config
+      - type: bind
+        source: /var/lib/docker/volumes/lidarr-extended-swarm_lidarr.custom-services
+        target: /custom-services.d
+      - type: bind
+        source: /var/lib/docker/volumes/lidarr-extended-swarm_lidarr.custom-cont-init.d
+        target: /custom-cont-init.d
+      - type: bind
+        source: /media/Multimedia/Music
+        target: /music
+      - type: bind
+        source: /media/Multimedia/Incoming
+        target: /downloads
     ports:
       - target: 8686
         published: 8686
@@ -27,17 +37,9 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.deployment.target.lidarr == true
+          - node.labels.deployment.target.lidarr-extended == true
       restart_policy:
         condition: on-failure
-
-volumes:
-  lidarr.config:
-    name: lidarr.config
-  lidarr.custom-services:
-    name: lidarr.custom-services
-  lidarr.custom-cont-init.d:
-    name: lidarr.custom-cont-init.d
 
 networks:
   lidarr-extended-swarm_default:
