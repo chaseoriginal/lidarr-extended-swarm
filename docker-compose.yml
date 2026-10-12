@@ -12,21 +12,11 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - type: bind
-        source: /var/lib/docker/volumes/lidarr-extended-swarm_lidarr.config
-        target: /config
-      - type: bind
-        source: /var/lib/docker/volumes/lidarr-extended-swarm_lidarr.custom-services
-        target: /custom-services.d
-      - type: bind
-        source: /var/lib/docker/volumes/lidarr-extended-swarm_lidarr.custom-cont-init.d
-        target: /custom-cont-init.d
-      - type: bind
-        source: /media/Multimedia/Music
-        target: /music
-      - type: bind
-        source: /media/Multimedia/Incoming
-        target: /downloads
+      - lidarr-extended-swarm_lidarr.config:/config
+      - lidarr-extended-swarm_lidarr.custom-services:/custom-services.d
+      - lidarr-extended-swarm_lidarr.custom-cont-init.d:/custom-cont-init.d
+      - /media/Multimedia/Music:/music
+      - /media/Multimedia/Incoming:/downloads
     ports:
       - target: 8686
         published: 8686
