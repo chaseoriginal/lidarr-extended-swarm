@@ -1,37 +1,39 @@
-x-base: &base
+x-base:
   restart: unless-stopped
-  networks:
-    - lidarr-extended-swarm_default
-
+  networks: &id001
+  - lidarr-extended-swarm_default
 services:
   lidarr:
-    <<: *base
+    restart: unless-stopped
+    networks: *id001
     image: linuxserver/lidarr:nightly
-    container_name: ${CNAME}
+    container_name: lidarr-extended-swarm_lidarr
     user: ${PUID}:${PGID}
     environment:
-      - TZ=${TZ}
+    - TZ=${TZ}
+    - PUID=1000
+    - PGID=1000
     volumes:
-      - lidarr-extended-swarm_lidarr.config:/config
-      - lidarr-extended-swarm_lidarr.custom-services:/custom-services.d
-      - lidarr-extended-swarm_lidarr.custom-cont-init.d:/custom-cont-init.d
-      - /media/Multimedia/Music:/music
-      - /media/Multimedia/Incoming:/downloads
+    - lidarr-extended-swarm_lidarr.config:/config
+    - /media/Multimedia/Music:/music
+    - /media/Multimedia/Incoming:/downloads
     ports:
-      - target: 8686
-        published: 8686
-        protocol: tcp
-        mode: host
+    - target: 8686
+      published: 8686
+      protocol: tcp
+      mode: host
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints:
-          - node.labels.deployment.target.lidarr-extended == true
+        - node.role==manager
       restart_policy:
         condition: on-failure
-
 networks:
   lidarr-extended-swarm_default:
     external: true
     name: lidarr-extended-swarm_default
+volumes:
+  lidarr-extended-swarm_lidarr.config:
+    name: lidarr-extended-swarm_lidarr.config
