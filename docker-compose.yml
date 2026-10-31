@@ -1,16 +1,15 @@
 x-base:
   restart: unless-stopped
-  networks: &id001
+  networks:
   - lidarr-extended-swarm_default
 services:
   lidarr:
     restart: unless-stopped
-    networks: *id001
     image: linuxserver/lidarr:nightly
     container_name: lidarr-extended-swarm_lidarr
-    user: ${PUID}:${PGID}
+    user: 1000:1000
     environment:
-    - TZ=${TZ}
+    - TZ=America/Chicago
     - PUID=1000
     - PGID=1000
     volumes:
@@ -30,10 +29,7 @@ services:
         - node.role==manager
       restart_policy:
         condition: on-failure
-networks:
-  lidarr-extended-swarm_default:
-    external: true
-    name: lidarr-extended-swarm_default
+networks: {}
 volumes:
   lidarr-extended-swarm_lidarr.config:
     name: lidarr-extended-swarm_lidarr.config
