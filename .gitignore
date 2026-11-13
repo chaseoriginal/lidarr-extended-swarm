@@ -1,3 +1,11 @@
 
 # Real environment values live in Portainer's stack Env, never in Git.
 .env
+.env.local
+*.bak
+*.log
+
+# The arr-extended config dir also holds a music library DB and logs.
+*.blb
+beets-lidarr.log
+beets.log
