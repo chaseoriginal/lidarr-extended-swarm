@@ -7,13 +7,14 @@ services:
     restart: unless-stopped
     image: linuxserver/lidarr:nightly-3.2.1.5196-ls224
     container_name: lidarr-extended-swarm_lidarr
-    user: 1000:1000
     environment:
     - TZ=America/Chicago
     - PUID=1000
     - PGID=1000
     volumes:
     - lidarr-extended-swarm_lidarr.config:/config
+    - lidarr-extended-swarm_lidarr.custom-services:/custom-services.d
+    - lidarr-extended-swarm_lidarr.custom-cont-init.d:/custom-cont-init.d
     - /media/Multimedia/Music:/music
     - /media/Multimedia/Incoming:/downloads
     ports:
@@ -28,8 +29,12 @@ services:
         constraints:
         - node.role==manager
       restart_policy:
-        condition: on-failure
+        condition: any
 networks: {}
 volumes:
   lidarr-extended-swarm_lidarr.config:
     name: lidarr-extended-swarm_lidarr.config
+  lidarr-extended-swarm_lidarr.custom-services:
+    name: lidarr-extended-swarm_lidarr.custom-services
+  lidarr-extended-swarm_lidarr.custom-cont-init.d:
+    name: lidarr-extended-swarm_lidarr.custom-cont-init.d
