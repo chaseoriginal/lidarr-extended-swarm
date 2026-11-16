@@ -5,7 +5,7 @@ x-base:
 services:
   lidarr:
     restart: unless-stopped
-    image: linuxserver/lidarr:nightly-3.2.1.5196-ls224
+    image: linuxserver/lidarr:nightly-3.2.1.5196-ls225
     container_name: lidarr-extended-swarm_lidarr
     environment:
     - TZ=America/Chicago
